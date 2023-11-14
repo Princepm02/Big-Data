@@ -1,0 +1,107 @@
+StockAnalysis.java
+
+import org.apache.hadoop.conf.Configured;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
+
+
+public class StockAnalysis extends Configured implements Tool{
+
+		public static void main(String[] args) throws Exception{
+			int exitcode=ToolRunner.run(new StockAnalysis(), args);
+			System.exit(exitcode);
+		}
+
+		@Override
+		public int run(String[] args) throws Exception {
+			if(args.length<2){
+				System.out.println("Give input and output directory correctly");
+				return -1;
+			}
+			JobConf conf=new JobConf(StockAnalysis.class);
+			FileInputFormat.setInputPaths(conf, new Path(args[0]));
+			FileOutputFormat.setOutputPath(conf, new Path(args[1]));
+			
+			conf.setMapperClass(StockAnalysisMapper.class);
+			conf.setReducerClass(StockAnalysisReducer.class);
+			
+			conf.setMapOutputKeyClass(Text.class);
+			conf.setMapOutputValueClass(FloatWritable.class);
+			conf.setOutputKeyClass(Text.class);
+			conf.setOutputValueClass(FloatWritable.class);
+			
+			JobClient.runJob(conf);
+			
+			return 0;
+		}
+
+	
+
+	}
+
+
+SA_Mapper.java
+
+import java.io.IOException;
+
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.Mapper;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reporter;
+
+
+public class StockAnalysisMapper extends MapReduceBase implements Mapper<LongWritable,Text,Text,FloatWritable> {
+
+	@Override
+	public void map(LongWritable key, Text value,
+			OutputCollector<Text, FloatWritable> output, Reporter r)
+			throws IOException {
+		String[] n = value.toString().split(",");
+		String stock=n[1];
+		Float ClosePrice=Float.parseFloat(n[6]);	
+		output.collect(new Text(stock), new FloatWritable(ClosePrice));
+
+	}
+
+}
+
+
+SA_Reducer.java
+
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.hadoop.io.FloatWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.MapReduceBase;
+import org.apache.hadoop.mapred.OutputCollector;
+import org.apache.hadoop.mapred.Reducer;
+import org.apache.hadoop.mapred.Reporter;
+
+
+public class StockAnalysisReducer extends MapReduceBase implements Reducer<Text,FloatWritable,Text,FloatWritable>{
+
+	@Override
+	public void reduce(Text key, Iterator<FloatWritable> values,
+			OutputCollector<Text, FloatWritable> output, Reporter r)
+			throws IOException {
+		float MaxClosePrice=Float.MAX_VALUE;
+		while(values.hasNext()){
+			FloatWritable i=values.next();
+			MaxClosePrice=Math.min(MaxClosePrice, i.get());
+		}
+		output.collect(key, new FloatWritable(MaxClosePrice));
+		
+	}
+
+}
