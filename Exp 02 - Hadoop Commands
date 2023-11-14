@@ -1,0 +1,55 @@
+1) Creates a directory named path in HDFS
+hdfs dfs -mkdir <path>
+hdfs dfs -mlkdir /home
+
+
+2) Copies the file or directory from the local file system identified by localSrc to dest within the DFS
+hdfs dfs -put <localSrc> <dest>
+hdfs dfs -put (paste location of local file) /home
+
+
+3) Lists the contents of the directory specified by path, showing the names, permissions, owner, size and modification date for each entry.
+hdfs dfs -ls <path>
+hdfs dfs -ls /Titanicdata
+
+
+4) Behaves like -ls, but recursively displays entries in all subdirectories of path.
+hdfs dfs -lsr <path>
+hdfs dfs -lsr /
+
+
+5) Displays the contents of filename on stdout.
+hdfs dfs -cat <file-name>
+hdfs dfs -cat /sh.txt
+
+
+6) Moves the file or directory indicated by src to dest, within HDFS.
+hdfs dfs -mv <src> <dest>
+hdfs dfs -mv /Crime.csv /home/
+
+7) Copies the file or directory identified by src to dest, within HDFS.
+ hdfs dfs -cp <src> <dest>
+hdfs dfs -cp /data.txt /home/data/
+
+
+8) Removes the file or empty directory identified by path.
+hdfs dfs -rm <path>
+hdfs dfs -rm /data.txt
+
+
+9) Removes the file or directory identified by path. Recursively deletes any child entries
+hdfs dfs -rmr <path>
+hdfs dfs -rmr /home/
+
+
+10) Identical to -put (copy file)
+hdfs dfs -copyFromLocal <localSrc> <dest>
+hdfs dfs -copyFromLocal file:///home/hadoop/sh.txt /home/
+
+
+11) Copies the file or directory from the local file system identified by localSrc to dest within HDFS, and then deletes the local copy on success.
+hdfs dfs -moveFromLocal <localSrc> <dest>
+
+12) Copies the file or directory in HDFS identified by src to the local file system path identified by localDest.
+hdfs dfs -get [-crc] <src> <localDest>
+hdfs dfs -get /process-bank-data /home/hadoop
