@@ -1,0 +1,119 @@
+Experiment - 1 
+Installing of Hadoop Single Node Cluster Configuration 
+
+1. Downloading the software Required 
+2. Untar the software/extract jdk and hadoop 
+3. Bashrc configurations 
+4. Hadoop Configuration File 
+5. Share public key to localhost 
+6. Formatting the name node 
+7. Starting Hadoop Daemons 
+8. Checking the working hadoop Daemons 
+
+
+STEP - 1 : 
+
+SOFTWARES REQUIRED 
+• Hadoop 1.2.0-bin.tar.gz 
+• Jdk 7u67-linux-i586.tar.gz 
+Link for JDK 
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+Link of Hadoop : http://mirror.fibergrid.in/apache/hadoop/common/hadoop1.2.0/
+
+
+STEP - 2 : 
+
+Untar the software with commands or right click to extract hadoop and JDK 
+• Open the terminal window 
+• Type the command : cd Desktop 
+• Type ls command 
+• tar –zxvf jdk-7u67-linux-i586.tar.gz 
+• tar –zxvf hadoop-1.2.0-bin.tar.gz 
+
+
+STEP - 3 :
+
+Bashrc configurations
+Open the terminal type the command 
+sudo gedit ~/.bashrc 
+export JAVA_HOME=/home/user/Desktop/jdk1.7.0_67 
+export PATH=$PATH:$JAVA_HOME/bin 
+export HADOOP_HOME=/home/user/Desktop/hadoop-1.2.0 
+export PATH=$PATH:$HADOOP_HOME/bin 
+Open new terminal and check for java version and Hadoop version. 
+
+
+STEP - 4 :
+
+Hadoop Configuration Files 
+Go to hadoop folder and click on conf folder , edit configuaration files 
+1. Core-site.xml 
+(Configuration setting for hadoop core, such as I/O setting that are common to 
+HDFS and Mapreduce) 
+2.Hdfs-Site.xml 
+ (Configuration setting for HDFS daemons the name node, Secondary name node 
+and data node and Replication factor as well) 
+3. Mapred-site.xml 
+(configuration setting for MapReduce daemons: the job tracker and the task 
+tracker) 
+4. Hadoop-Env_sh 
+(Environment variables that are used in the scripts to run Hadoop) 
+• Open the new terminal window 
+• Go to the hadoop folder 
+• cd Desktop 
+• cd Hadoop (Press tab) for path 
+• cd conf 
+• Type ls
+• All the above mentioned files are listed 
+• Go to terminal and type 
+sudo gedit core-site.xml
+<configuration> 
+<property> 
+<name>fs.default.name</name> 
+<value>hdfs://localhost:9000</value> 
+</property> 
+</configuration> 
+Ip address :127.0.0.0 , 198.1.27.0 
+Port no: 80, 
+• Go to terminal and type 
+sudo gedit hdfs-site.xml
+<configuration> 
+<property> 
+<name>dfs.replication</name> 
+<value>1</value> 
+<name>dfs.name.dir</name> 
+ <value>/home/user/Desktop/hadoop-1.2.0/name/data</value> 
+</property> 
+</configuration> 
+• Go to terminal and type
+sudo gedit mapred-site.xml
+<configuration> 
+<property> 
+<name>mapred.job.tracker</name> 
+<value>hdfs://localhost:9001</value> 
+</property> 
+</configuration> 
+• Go to terminal and type 
+sudo gedit hadoop-env.sh
+export JAVA_HOME=/home/user/Desktop/jdk1.7.0_67 
+
+
+STEP - 5 :
+
+SSh Configuration 
+• sudo apt-get install ssh 
+• ssh-keygen -t rsa -P "" 
+ Sharing the public key with host 
+• ssh-copy-id –i ~/.ssh/id_rsa.pub user@ubuntuvm and check 
+• ssh localhost (It should not ask password) 
+STEP 6
+Formatting the Name Node 
+• $ hadoop namenode –format 
+• format a new distributed file system 
+• Process creates an empty file system for creating the storage directories 
+STEP-7&8
+Starting Hadoop Daemons 
+Open the terminal window and type 
+$ start-all.sh 
+and type
+$ jps
