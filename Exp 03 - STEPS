@@ -1,0 +1,26 @@
+Step 1 :
+Create new Java project in eclipse.
+
+Step 2 :
+Add Hadoop file to project
+- Click on project folder.
+- Select Build Path -> select configure build path
+- go to Libraries tab -> Click on Add External jars
+- go to desktop (double click) -> select hadoop_java_jars (Double click)
+- CTRL A & select all jar files then click OK -> Click OK
+
+Step 3 :
+create all 3 class and write the code for the 3 classes (word count mapper, word count reducer, word count Java)
+
+Step 4 :
+- click on project -> click on export
+- click on java -> Click on JAR file
+- Browse -> Desktop (save it)
+- Name : WC.jar
+- then save
+
+Step 5 : (Open Terminal)
+(WordCount is Java main class name)
+- hadoop dfs -mkdir /WC_Input
+- hadoop dfs -put (paste address of txt file) /WC_Input
+- hadoop jar (paste location of recent created jar file) WordCount /WC_Input/data.txt /WC_Output
