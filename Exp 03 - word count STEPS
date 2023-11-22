@@ -10,7 +10,7 @@ Add Hadoop file to project
 - CTRL A & select all jar files then click OK -> Click OK
 
 Step 3 :
-create all 3 class and write the code for the 3 classes (word count mapper, word count reducer, word count Java)
+create all 3 class and write the code for the 3 classes (mapper, reducer, Java main file)
 
 Step 4 :
 - click on project -> click on export
